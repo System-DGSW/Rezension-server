@@ -4,6 +4,7 @@ import system.rezension.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.studynote.dto.response.StudyNoteResponse;
 import system.rezension.studynote.entity.StudyNote;
 import system.rezension.studynote.repository.StudyNoteRepository;
+import system.rezension.member.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,11 +38,18 @@ class StudyNoteServiceImplTest {
 
         StudyNoteCreateRequest request = new StudyNoteCreateRequest("테스트 제목", "테스트 내용");
 
+        // 테스트용 Member 생성
+        Member member = Member.builder()
+                .id(1L)
+                .username("finefinee")
+                .password("password")
+                .build();
+
         StudyNote studyNote = StudyNote.builder()
                 .id(1L)
                 .title("테스트 제목")
                 .content("테스트 내용")
-                .member(null)  // 필요하다면 mock Member 넣기
+                .member(member)  // Member 넣기
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -55,5 +63,6 @@ class StudyNoteServiceImplTest {
         assertThat(response.id()).isEqualTo(1L);
         assertThat(response.title()).isEqualTo("테스트 제목");
         assertThat(response.content()).isEqualTo("테스트 내용");
+        assertThat(response.username()).isEqualTo("finefinee"); // username 검증
     }
 }
