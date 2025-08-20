@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Rezension
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/Rezension}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
