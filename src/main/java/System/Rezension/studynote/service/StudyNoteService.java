@@ -3,7 +3,6 @@ package System.Rezension.studynote.service;
 import System.Rezension.studynote.dto.request.StudyNoteCreateRequest;
 import System.Rezension.studynote.dto.request.StudyNoteUpdateRequest;
 import System.Rezension.studynote.dto.response.StudyNoteResponse;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
