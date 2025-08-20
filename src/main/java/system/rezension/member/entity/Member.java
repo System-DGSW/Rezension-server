@@ -1,6 +1,6 @@
-package System.Rezension.member.entity;
+package system.rezension.member.entity;
 
-import System.Rezension.studynote.entity.StudyNote;
+import system.rezension.studynote.entity.StudyNote;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +28,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<StudyNote> studyNotes = new ArrayList<>();
 }

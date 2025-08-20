@@ -1,4 +1,4 @@
-package System.Rezension.member.entity;
+package system.rezension.member.entity;
 
 public enum Role {
     BASIC,

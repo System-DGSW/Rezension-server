@@ -1,7 +1,7 @@
-package System.Rezension.studynote.entity;
+package system.rezension.studynote.entity;
 
-import System.Rezension.member.entity.Member;
-import System.Rezension.question.entity.Question;
+import system.rezension.member.entity.Member;
+import system.rezension.question.entity.Question;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
