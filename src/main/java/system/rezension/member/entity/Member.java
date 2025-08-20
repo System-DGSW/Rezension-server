@@ -1,6 +1,6 @@
-package System.Rezension.member.entity;
+package system.rezension.member.entity;
 
-import System.Rezension.studynote.entity.StudyNote;
+import system.rezension.studynote.entity.StudyNote;
 import jakarta.persistence.*;
 import lombok.*;
 

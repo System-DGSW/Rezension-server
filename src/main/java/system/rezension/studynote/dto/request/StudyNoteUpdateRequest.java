@@ -1,4 +1,4 @@
-package System.Rezension.studynote.dto.request;
+package system.rezension.studynote.dto.request;
 
 import java.util.Optional;
 

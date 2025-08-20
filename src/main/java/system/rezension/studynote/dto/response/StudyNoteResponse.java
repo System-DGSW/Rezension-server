@@ -1,4 +1,4 @@
-package System.Rezension.studynote.dto.response;
+package system.rezension.studynote.dto.response;
 
 import java.time.LocalDateTime;
 

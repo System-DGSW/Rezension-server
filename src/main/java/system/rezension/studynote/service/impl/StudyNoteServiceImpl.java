@@ -1,11 +1,11 @@
-package System.Rezension.studynote.service.impl;
+package system.rezension.studynote.service.impl;
 
-import System.Rezension.studynote.dto.request.StudyNoteCreateRequest;
-import System.Rezension.studynote.dto.request.StudyNoteUpdateRequest;
-import System.Rezension.studynote.dto.response.StudyNoteResponse;
-import System.Rezension.studynote.entity.StudyNote;
-import System.Rezension.studynote.repository.StudyNoteRepository;
-import System.Rezension.studynote.service.StudyNoteService;
+import system.rezension.studynote.dto.request.StudyNoteCreateRequest;
+import system.rezension.studynote.dto.request.StudyNoteUpdateRequest;
+import system.rezension.studynote.dto.response.StudyNoteResponse;
+import system.rezension.studynote.entity.StudyNote;
+import system.rezension.studynote.repository.StudyNoteRepository;
+import system.rezension.studynote.service.StudyNoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;

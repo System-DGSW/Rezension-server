@@ -1,8 +1,8 @@
-package System.Rezension.studynote.service;
+package system.rezension.studynote.service;
 
-import System.Rezension.studynote.dto.request.StudyNoteCreateRequest;
-import System.Rezension.studynote.dto.request.StudyNoteUpdateRequest;
-import System.Rezension.studynote.dto.response.StudyNoteResponse;
+import system.rezension.studynote.dto.request.StudyNoteCreateRequest;
+import system.rezension.studynote.dto.request.StudyNoteUpdateRequest;
+import system.rezension.studynote.dto.response.StudyNoteResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
