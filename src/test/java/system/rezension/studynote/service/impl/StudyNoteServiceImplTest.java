@@ -66,4 +66,39 @@ class StudyNoteServiceImplTest {
         assertThat(response.content()).isEqualTo("테스트 내용");
         assertThat(response.username()).isEqualTo("finefinee"); // username 검증
     }
+
+    @Test
+    void readStudyNote_shouldReturnResponse() {
+        // given
+        UserDetails userDetails = User.withUsername("finefinee")
+                .password("password")
+                .roles("USER")
+                .build();
+
+        Member member = Member.builder()
+                .id(1L)
+                .username("finefinee")
+                .password("password")
+                .build();
+
+        StudyNote studyNote = StudyNote.builder()
+                .id(1L)
+                .title("테스트 제목")
+                .content("테스트 내용")
+                .member(member)
+                .createdAt(LocalDateTime.of(2023, 8, 21, 12, 0))
+                .build();
+
+        when(studyNoteRepository.findById(1L)).thenReturn(java.util.Optional.of(studyNote));
+
+        // when
+        StudyNoteResponse response = studyNoteService.readStudyNote(userDetails, 1L);
+
+        // then
+        assertThat(response.id()).isEqualTo(1L);
+        assertThat(response.title()).isEqualTo("테스트 제목");
+        assertThat(response.content()).isEqualTo("테스트 내용");
+        assertThat(response.username()).isEqualTo("finefinee");
+        assertThat(response.createdAt()).isEqualTo(LocalDateTime.of(2023, 8, 21, 12, 0));
+    }
 }
