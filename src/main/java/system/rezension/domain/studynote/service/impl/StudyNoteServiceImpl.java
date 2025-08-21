@@ -19,6 +19,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
     private final StudyNoteRepository studyNoteRepository;
 
+    // StudyNote 만들기
     @Override
     public StudyNoteResponse createStudyNote(UserDetails userDetails, StudyNoteCreateRequest studyNoteCreateRequest) {
 
@@ -27,13 +28,12 @@ public class StudyNoteServiceImpl implements StudyNoteService {
                 .content(studyNoteCreateRequest.content())
                 .build();
 
-
         StudyNote savedNote = studyNoteRepository.save(studyNote);
-
 
         return StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
 
+    // StudyNote 1개 읽기
     @Override
     public StudyNoteResponse readStudyNote(UserDetails userDetails, Long studyNoteId) {
         StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
@@ -48,6 +48,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         );
     }
 
+    // StudyNote 전체 읽기
     @Override
     public List<StudyNoteResponse> readAllStudyNote(UserDetails userDetails) {
         return List.of();

@@ -13,6 +13,7 @@ public record StudyNoteResponse(
         String username,
         LocalDateTime createdAt
 ) {
+    // StudyNote를 넣으면 ResponseDto로 반환
     public static StudyNoteResponse fromStudyNoteEntity(StudyNote studyNote) {
         return StudyNoteResponse.builder()
                 .content(studyNote.getContent())
