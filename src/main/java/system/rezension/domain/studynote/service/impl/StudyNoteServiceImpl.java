@@ -12,7 +12,6 @@ import system.rezension.domain.studynote.repository.StudyNoteRepository;
 import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
