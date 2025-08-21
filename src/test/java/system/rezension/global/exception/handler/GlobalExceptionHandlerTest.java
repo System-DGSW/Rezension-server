@@ -2,11 +2,10 @@ package system.rezension.global.exception.handler;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import system.rezension.global.exception.CustomStatusException;
 import system.rezension.global.exception.dto.response.ErrorResponse;
-import system.rezension.global.exception.enums.ExceptionStatusCode;
+import system.rezension.global.exception.enums.GlobalExceptionStatusCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +15,7 @@ class GlobalExceptionHandlerTest {
     @DisplayName("CustomStatusException 발생 시 ErrorResponse 반환 형식 테스트")
     void handleCustomStatusException_returnsProperErrorResponse() {
         // given
-        ExceptionStatusCode status = ExceptionStatusCode.BAD_REQUEST;
+        GlobalExceptionStatusCode status = GlobalExceptionStatusCode.BAD_REQUEST;
         CustomStatusException ex = new CustomStatusException(status);
         GlobalExceptionHandler handler = new GlobalExceptionHandler();
 

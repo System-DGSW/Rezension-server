@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.global.exception.CustomStatusException;
 import system.rezension.global.exception.dto.response.ErrorResponse;
-import system.rezension.global.exception.enums.ExceptionStatusCode;
+import system.rezension.global.exception.enums.GlobalExceptionStatusCode;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
@@ -38,69 +38,69 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNoSuchAlgorithmException(NoSuchAlgorithmException ex) {
         return ResponseEntity
                 .status(500)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.ENCODE_FAILED));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.ENCODE_FAILED));
     }
 
     @ExceptionHandler(PropertyValueException.class)
     public ResponseEntity<ErrorResponse> handlePropertyValueException(PropertyValueException ex) {
         return ResponseEntity
-                .status(ExceptionStatusCode.REQUIRE_ARGUMENTS.getStatusCode())
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+                .status(GlobalExceptionStatusCode.REQUIRE_ARGUMENTS.getStatusCode())
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.REQUIRE_ARGUMENTS));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return ResponseEntity
                 .status(400)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.REQUIRE_ARGUMENTS));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity
                 .status(400)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.REQUIRE_ARGUMENTS));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         return ResponseEntity
                 .status(400)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.REQUIRE_ARGUMENTS));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
         return ResponseEntity
                 .status(400)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.BAD_REQUEST));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.BAD_REQUEST));
     }
 
     @ExceptionHandler(ClassCastException.class)
     public ResponseEntity<ErrorResponse> handleClassCastException(ClassCastException ex) {
         return ResponseEntity
                 .status(502)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.PROXY_ERROR));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.PROXY_ERROR));
     }
 
     @ExceptionHandler({DuplicateKeyException.class, DataIntegrityViolationException.class})
     public ResponseEntity<ErrorResponse> handleDuplicateKeyException(DuplicateKeyException ex) {
         return ResponseEntity
                 .status(409)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.AlREADY_CREATED_DATA));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.AlREADY_CREATED_DATA));
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
         return ResponseEntity
                 .status(400)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.PAYLOAD_TOO_LARGE));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.PAYLOAD_TOO_LARGE));
     }
 
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<ErrorResponse> handleSignatureException(SignatureException ex) {
         return ResponseEntity
                 .status(400)
-                .body(ErrorResponse.errorResponse(ExceptionStatusCode.JWT_SIGNATURE));
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.JWT_SIGNATURE));
     }
 }
