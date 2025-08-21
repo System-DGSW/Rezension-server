@@ -161,10 +161,7 @@ class StudyNoteServiceImplTest {
         StudyNote note2 = StudyNote.builder().id(2L).title("t2").content("c2").member(member).createdAt(LocalDateTime.now()).build();
 
         when(memberRepository.findByUsername("finefinee")).thenReturn(Optional.of(member));
-        when(studyNoteRepository.findAllByMember(member)).thenReturn(List.of(
-            StudyNoteResponse.fromStudyNoteEntity(note1),
-            StudyNoteResponse.fromStudyNoteEntity(note2)
-        ));
+        when(studyNoteRepository.findAllByMember(member)).thenReturn(List.of(note1, note2));
 
         // when
         List<StudyNoteResponse> list = studyNoteService.readAllStudyNote(userDetails);
