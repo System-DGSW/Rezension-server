@@ -20,7 +20,7 @@ class GlobalExceptionHandlerTest {
         GlobalExceptionHandler handler = new GlobalExceptionHandler();
 
         // when
-        ResponseEntity<ErrorResponse> response = handler.handleClassCastException(ex);
+        ResponseEntity<ErrorResponse> response = handler.handleCustomStatusException(ex);
 
         // then
         assertThat(response.getStatusCode().value()).isEqualTo(status.getStatusCode());

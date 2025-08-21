@@ -21,14 +21,7 @@ import java.security.SignatureException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(CustomStatusException.class)
-    public ResponseEntity<ErrorResponse> handleClassCastException(CustomStatusException ex) {
-        return ResponseEntity
-                .status(ex.getStatus().getStatusCode())
-                .body(ErrorResponse.errorResponse(ex.getStatus()));
-    }
-
-    @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleMemberNotFoundException(CustomStatusException ex) {
+    public ResponseEntity<ErrorResponse> handleCustomStatusException(CustomStatusException ex) {
         return ResponseEntity
                 .status(ex.getStatus().getStatusCode())
                 .body(ErrorResponse.errorResponse(ex.getStatus()));
@@ -79,12 +72,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClassCastException.class)
     public ResponseEntity<ErrorResponse> handleClassCastException(ClassCastException ex) {
         return ResponseEntity
-                .status(502)
-                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.PROXY_ERROR));
+                .status(500)
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.INTERNAL_SERVER));
     }
 
-    @ExceptionHandler({DuplicateKeyException.class, DataIntegrityViolationException.class})
+    @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateKeyException(DuplicateKeyException ex) {
+        return ResponseEntity
+                .status(409)
+                .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.AlREADY_CREATED_DATA));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateKeyException(DataIntegrityViolationException ex) {
         return ResponseEntity
                 .status(409)
                 .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.AlREADY_CREATED_DATA));
@@ -93,7 +93,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
         return ResponseEntity
-                .status(400)
+                .status(413)
                 .body(ErrorResponse.errorResponse(GlobalExceptionStatusCode.PAYLOAD_TOO_LARGE));
     }
 
