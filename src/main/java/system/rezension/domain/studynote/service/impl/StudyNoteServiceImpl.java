@@ -10,7 +10,8 @@ import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
 import system.rezension.domain.studynote.entity.StudyNote;
-import system.rezension.domain.studynote.error.StudyNoteNotFoundException;
+import system.rezension.domain.studynote.exception.StudyNoteAccessDeniedException;
+import system.rezension.domain.studynote.exception.StudyNoteNotFoundException;
 import system.rezension.domain.studynote.repository.StudyNoteRepository;
 import system.rezension.domain.studynote.service.StudyNoteService;
 
@@ -45,7 +46,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
         // 예외 추가 예정
         if (studyNote.getMember().getUsername() != userDetails.getUsername()) {
-            throw new IllegalArgumentException("");
+            throw new StudyNoteAccessDeniedException();
         }
 
         return StudyNoteResponse.fromStudyNoteEntity(studyNote);
@@ -62,11 +63,29 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
     @Override
     public StudyNoteResponse updateStudyNote(UserDetails userDetails, StudyNoteUpdateRequest studyNoteUpdateRequest) {
-        return null;
+        StudyNote studyNote = studyNoteRepository.findById(studyNoteUpdateRequest.id())
+                .orElseThrow(StudyNoteNotFoundException::new);
+
+        if (!studyNote.getMember().getUsername().equals(userDetails.getUsername())) {
+            throw new StudyNoteAccessDeniedException();
+        }
+
+        studyNoteUpdateRequest.title().ifPresent(studyNote::setTitle);
+        studyNoteUpdateRequest.content().ifPresent(studyNote::setContent);
+        StudyNote saved = studyNoteRepository.save(studyNote);
+        return StudyNoteResponse.fromStudyNoteEntity(saved);
     }
 
     @Override
     public StudyNoteResponse deleteStudyNote(UserDetails userDetails, Long studyNoteId) {
-        return null;
+        StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
+                .orElseThrow(StudyNoteNotFoundException::new);
+
+        if (!studyNote.getMember().getUsername().equals(userDetails.getUsername())) {
+            throw new StudyNoteAccessDeniedException();
+        }
+
+        studyNoteRepository.delete(studyNote);
+        return StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
 }
