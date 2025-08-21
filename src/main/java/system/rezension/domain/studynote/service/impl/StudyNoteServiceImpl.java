@@ -3,6 +3,9 @@ package system.rezension.domain.studynote.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import system.rezension.domain.member.entity.Member;
+import system.rezension.domain.member.exception.MemberNotFoundException;
+import system.rezension.domain.member.repository.MemberRepository;
 import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
@@ -18,6 +21,7 @@ import java.util.List;
 public class StudyNoteServiceImpl implements StudyNoteService {
 
     private final StudyNoteRepository studyNoteRepository;
+    private final MemberRepository memberRepository;
 
     // StudyNote 만들기
     @Override
@@ -39,19 +43,21 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
                 .orElseThrow(() -> new StudyNoteNotFoundException());
 
-        return new StudyNoteResponse(
-                studyNoteId,
-                studyNote.getTitle(),
-                studyNote.getContent(),
-                studyNote.getMember().getUsername(),
-                studyNote.getCreatedAt()
-        );
+        // 예외 추가 예정
+        if (studyNote.getMember().getUsername() != userDetails.getUsername()) {
+            throw new IllegalArgumentException("");
+        }
+
+        return StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
 
     // StudyNote 전체 읽기
     @Override
     public List<StudyNoteResponse> readAllStudyNote(UserDetails userDetails) {
-        return List.of();
+        Member member = memberRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        return studyNoteRepository.findAllByMember(member);
     }
 
     @Override
