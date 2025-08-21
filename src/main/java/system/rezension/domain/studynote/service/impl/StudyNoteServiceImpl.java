@@ -10,7 +10,6 @@ import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
 import system.rezension.domain.studynote.entity.StudyNote;
-import system.rezension.domain.studynote.exception.StudyNoteAccessDeniedException;
 import system.rezension.domain.studynote.exception.StudyNoteNotFoundException;
 import system.rezension.domain.studynote.repository.StudyNoteRepository;
 import system.rezension.domain.studynote.service.StudyNotePermissionValidator;
@@ -31,14 +30,18 @@ public class StudyNoteServiceImpl implements StudyNoteService {
     @Override
     public StudyNoteResponse createStudyNote(UserDetails userDetails, StudyNoteCreateRequest studyNoteCreateRequest) {
 
+        Member member = memberRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new MemberNotFoundException());
+
         StudyNote studyNote = StudyNote.builder()
                 .title(studyNoteCreateRequest.title())
                 .content(studyNoteCreateRequest.content())
+                .member(member)
                 .build();
 
         StudyNote savedNote = studyNoteRepository.save(studyNote);
 
-        return StudyNoteResponse.fromStudyNoteEntity(studyNote);
+        return StudyNoteResponse.fromStudyNoteEntity(savedNote);
     }
 
     // StudyNote 1개 읽기
