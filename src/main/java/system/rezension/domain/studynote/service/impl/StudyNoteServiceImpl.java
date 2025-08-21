@@ -11,7 +11,6 @@ import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
 import system.rezension.domain.studynote.entity.StudyNote;
-import system.rezension.domain.studynote.entity.Visibility;
 import system.rezension.domain.studynote.exception.StudyNoteNotFoundException;
 import system.rezension.domain.studynote.repository.StudyNoteRepository;
 import system.rezension.domain.studynote.service.StudyNotePermissionValidator;

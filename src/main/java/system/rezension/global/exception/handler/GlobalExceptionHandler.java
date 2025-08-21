@@ -15,7 +15,6 @@ import system.rezension.global.exception.CustomStatusException;
 import system.rezension.global.exception.dto.response.ErrorResponse;
 import system.rezension.global.exception.enums.ExceptionStatusCode;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 
