@@ -4,8 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import system.rezension.domain.member.exception.MemberNotFoundException;
-import system.rezension.domain.studynote.exception.StudyNoteAccessDeniedException;
-import system.rezension.domain.studynote.exception.StudyNoteNotFoundException;
 import system.rezension.global.exception.CustomStatusException;
 import system.rezension.global.exception.dto.response.ErrorResponse;
 
