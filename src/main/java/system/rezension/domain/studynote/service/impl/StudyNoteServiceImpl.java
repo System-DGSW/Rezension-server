@@ -1,16 +1,18 @@
-package system.rezension.studynote.service.impl;
+package system.rezension.domain.studynote.service.impl;
 
-import system.rezension.studynote.dto.request.StudyNoteCreateRequest;
-import system.rezension.studynote.dto.request.StudyNoteUpdateRequest;
-import system.rezension.studynote.dto.response.StudyNoteResponse;
-import system.rezension.studynote.entity.StudyNote;
-import system.rezension.studynote.repository.StudyNoteRepository;
-import system.rezension.studynote.service.StudyNoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
+import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
+import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
+import system.rezension.domain.studynote.entity.StudyNote;
+import system.rezension.domain.studynote.error.StudyNoteNotFoundException;
+import system.rezension.domain.studynote.repository.StudyNoteRepository;
+import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,16 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
     @Override
     public StudyNoteResponse readStudyNote(UserDetails userDetails, Long studyNoteId) {
-        return null;
+        StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
+                .orElseThrow(() -> new StudyNoteNotFoundException());
+
+        return new StudyNoteResponse(
+                studyNoteId,
+                studyNote.getTitle(),
+                studyNote.getContent(),
+                studyNote.getMember().getUsername(),
+                studyNote.getCreatedAt()
+        );
     }
 
     @Override

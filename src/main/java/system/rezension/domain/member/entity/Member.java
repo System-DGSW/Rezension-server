@@ -1,8 +1,8 @@
-package system.rezension.member.entity;
+package system.rezension.domain.member.entity;
 
-import system.rezension.studynote.entity.StudyNote;
 import jakarta.persistence.*;
 import lombok.*;
+import system.rezension.domain.studynote.entity.StudyNote;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
 package system.rezension.studynote.service.impl;
 
-import system.rezension.studynote.dto.request.StudyNoteCreateRequest;
-import system.rezension.studynote.dto.response.StudyNoteResponse;
-import system.rezension.studynote.entity.StudyNote;
-import system.rezension.studynote.repository.StudyNoteRepository;
-import system.rezension.member.entity.Member;
+import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
+import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
+import system.rezension.domain.studynote.entity.StudyNote;
+import system.rezension.domain.studynote.repository.StudyNoteRepository;
+import system.rezension.domain.member.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import system.rezension.domain.studynote.service.impl.StudyNoteServiceImpl;
 
 import java.time.LocalDateTime;
 

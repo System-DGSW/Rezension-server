@@ -1,8 +1,8 @@
-package system.rezension.question.entity;
+package system.rezension.domain.question.entity;
 
-import system.rezension.studynote.entity.StudyNote;
 import jakarta.persistence.*;
 import lombok.*;
+import system.rezension.domain.studynote.entity.StudyNote;
 
 @Entity
 @Getter

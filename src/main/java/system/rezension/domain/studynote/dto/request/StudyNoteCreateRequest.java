@@ -1,4 +1,4 @@
-package system.rezension.studynote.dto.request;
+package system.rezension.domain.studynote.dto.request;
 
 public record StudyNoteCreateRequest(
         String title,
