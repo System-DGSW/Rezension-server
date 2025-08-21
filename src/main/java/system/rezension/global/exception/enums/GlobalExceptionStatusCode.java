@@ -3,7 +3,7 @@ package system.rezension.global.exception.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ExceptionStatusCode implements StatusCode {
+public enum GlobalExceptionStatusCode implements StatusCode {
     NOT_FOUND(404, "존재하지 않는 데이터"),
     BAD_REQUEST(400, "존재하지 않는 요청"),
     NOT_ACCEPTABLE(406, "데이터 접근권한 없음"),

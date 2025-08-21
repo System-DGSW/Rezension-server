@@ -33,4 +33,7 @@ public class StudyNote {
 
     @OneToOne(mappedBy = "studyNote", cascade = CascadeType.ALL, orphanRemoval = true)
     private Question question;
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 }
