@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import system.rezension.domain.member.entity.Member;
+import system.rezension.domain.member.entity.Role;
 import system.rezension.domain.question.entity.Question;
 
 import java.time.LocalDateTime;
@@ -33,4 +34,7 @@ public class StudyNote {
 
     @OneToOne(mappedBy = "studyNote", cascade = CascadeType.ALL, orphanRemoval = true)
     private Question question;
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 }
