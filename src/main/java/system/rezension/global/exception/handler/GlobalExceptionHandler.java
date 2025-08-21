@@ -1,11 +1,23 @@
 package system.rezension.global.exception.handler;
 
+import org.hibernate.PropertyValueException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.global.exception.CustomStatusException;
 import system.rezension.global.exception.dto.response.ErrorResponse;
+import system.rezension.global.exception.enums.ExceptionStatusCode;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -21,5 +33,75 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(ex.getStatus().getStatusCode())
                 .body(ErrorResponse.errorResponse(ex.getStatus()));
+    }
+
+    @ExceptionHandler(NoSuchAlgorithmException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchAlgorithmException(NoSuchAlgorithmException ex) {
+        return ResponseEntity
+                .status(500)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.ENCODE_FAILED));
+    }
+
+    @ExceptionHandler(PropertyValueException.class)
+    public ResponseEntity<ErrorResponse> handlePropertyValueException(PropertyValueException ex) {
+        return ResponseEntity
+                .status(ExceptionStatusCode.REQUIRE_ARGUMENTS.getStatusCode())
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        return ResponseEntity
+                .status(400)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(400)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        return ResponseEntity
+                .status(400)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.REQUIRE_ARGUMENTS));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity
+                .status(400)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(ClassCastException.class)
+    public ResponseEntity<ErrorResponse> handleClassCastException(ClassCastException ex) {
+        return ResponseEntity
+                .status(502)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.PROXY_ERROR));
+    }
+
+    @ExceptionHandler({DuplicateKeyException.class, DataIntegrityViolationException.class})
+    public ResponseEntity<ErrorResponse> handleDuplicateKeyException(DuplicateKeyException ex) {
+        return ResponseEntity
+                .status(409)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.AlREADY_CREATED_DATA));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        return ResponseEntity
+                .status(400)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.PAYLOAD_TOO_LARGE));
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<ErrorResponse> handleSignatureException(SignatureException ex) {
+        return ResponseEntity
+                .status(400)
+                .body(ErrorResponse.errorResponse(ExceptionStatusCode.JWT_SIGNATURE));
     }
 }
