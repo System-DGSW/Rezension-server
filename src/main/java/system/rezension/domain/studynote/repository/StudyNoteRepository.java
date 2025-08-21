@@ -8,5 +8,5 @@ import system.rezension.domain.studynote.entity.StudyNote;
 import java.util.List;
 
 public interface StudyNoteRepository extends JpaRepository<StudyNote, Long> {
-    List<StudyNoteResponse> findAllByMember(Member member);
+    List<StudyNote> findAllByMember(Member member);
 }
