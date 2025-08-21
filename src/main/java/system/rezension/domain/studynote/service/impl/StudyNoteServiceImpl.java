@@ -31,13 +31,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         StudyNote savedNote = studyNoteRepository.save(studyNote);
 
 
-        return new StudyNoteResponse(
-                savedNote.getId(),
-                savedNote.getTitle(),
-                savedNote.getContent(),
-                savedNote.getMember().getUsername(),
-                savedNote.getCreatedAt()
-        );
+        return StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
 
     @Override
