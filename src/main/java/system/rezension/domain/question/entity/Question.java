@@ -22,4 +22,7 @@ public class Question {
     @OneToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "study_note_id", nullable = false,  unique = true)
     private StudyNote studyNote;
+
+    @Enumerated(EnumType.STRING)
+    private EmailSubscription emailSubscription;
 }
