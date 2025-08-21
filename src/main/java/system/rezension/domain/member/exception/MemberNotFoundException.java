@@ -5,6 +5,6 @@ import system.rezension.global.exception.CustomStatusException;
 
 public class MemberNotFoundException extends CustomStatusException {
     public MemberNotFoundException() {
-        super(MemberExceptionStatusCode.USER_NOT_FOUND);
+        super(MemberExceptionStatusCode.MEMBER_NOT_FOUND);
     }
 }

@@ -7,7 +7,7 @@ import system.rezension.global.exception.enums.StatusCode;
 public enum MemberExceptionStatusCode implements StatusCode {
     INVALID_EMAIL(400, "유효하지 않은 이메일"),
     LOGIN_FAIL(401, "아이디 또는 비밀번호 불일치"),
-    USER_NOT_FOUND(404, "유저를 찾을 수 없음"),
+    MEMBER_NOT_FOUND(404, "멤버를 찾을 수 없음"),
     EMAIL_VERIFY_FAILED(401, "인증되지 않은 이메일"),
     INVALID_CODE(401, "코드 인증 실패"),
     ALREADY_EXIST(409, "이미 존재하는 이메일");
