@@ -7,5 +7,5 @@ import system.rezension.global.exception.enums.StatusCode;
 @Getter
 @RequiredArgsConstructor
 public class CustomStatusException extends RuntimeException {
-    private final StatusCode statusCode;
+    private final StatusCode status;
 }
