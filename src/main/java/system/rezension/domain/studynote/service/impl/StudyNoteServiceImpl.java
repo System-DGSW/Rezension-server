@@ -40,7 +40,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
                 .title(studyNoteCreateRequest.title())
                 .content(studyNoteCreateRequest.content())
                 .member(member)
-                .visibility(Visibility.PRIVATE)
+                .visibility(studyNoteCreateRequest.visibility())
                 .build();
 
         StudyNote savedNote = studyNoteRepository.save(studyNote);
@@ -81,6 +81,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
         studyNoteUpdateRequest.title().ifPresent(studyNote::setTitle);
         studyNoteUpdateRequest.content().ifPresent(studyNote::setContent);
+        studyNoteUpdateRequest.visibility().ifPresent(studyNote::setVisibility);
         StudyNote saved = studyNoteRepository.save(studyNote);
         return StudyNoteResponse.fromStudyNoteEntity(saved);
     }
