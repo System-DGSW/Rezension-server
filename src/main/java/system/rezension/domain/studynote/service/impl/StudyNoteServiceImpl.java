@@ -13,6 +13,7 @@ import system.rezension.domain.studynote.entity.StudyNote;
 import system.rezension.domain.studynote.exception.StudyNoteAccessDeniedException;
 import system.rezension.domain.studynote.exception.StudyNoteNotFoundException;
 import system.rezension.domain.studynote.repository.StudyNoteRepository;
+import system.rezension.domain.studynote.service.StudyNotePermissionValidator;
 import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
     private final StudyNoteRepository studyNoteRepository;
     private final MemberRepository memberRepository;
+    // validate 메서드가 StudyNote의 멤버와 현재 로그인 한 멤버와 같은지 확인합니다.
+    private final StudyNotePermissionValidator studyNoteValidator;
 
     // StudyNote 만들기
     @Override
@@ -45,9 +48,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
                 .orElseThrow(() -> new StudyNoteNotFoundException());
 
         // 예외 추가 예정
-        if (studyNote.getMember().getUsername() != userDetails.getUsername()) {
-            throw new StudyNoteAccessDeniedException();
-        }
+        studyNoteValidator.validate(userDetails, studyNote);
 
         return StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
@@ -66,9 +67,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         StudyNote studyNote = studyNoteRepository.findById(studyNoteUpdateRequest.id())
                 .orElseThrow(StudyNoteNotFoundException::new);
 
-        if (!studyNote.getMember().getUsername().equals(userDetails.getUsername())) {
-            throw new StudyNoteAccessDeniedException();
-        }
+        studyNoteValidator.validate(userDetails, studyNote);
 
         studyNoteUpdateRequest.title().ifPresent(studyNote::setTitle);
         studyNoteUpdateRequest.content().ifPresent(studyNote::setContent);
@@ -81,9 +80,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
                 .orElseThrow(StudyNoteNotFoundException::new);
 
-        if (!studyNote.getMember().getUsername().equals(userDetails.getUsername())) {
-            throw new StudyNoteAccessDeniedException();
-        }
+        studyNoteValidator.validate(userDetails, studyNote);
 
         studyNoteRepository.delete(studyNote);
         return StudyNoteResponse.fromStudyNoteEntity(studyNote);
