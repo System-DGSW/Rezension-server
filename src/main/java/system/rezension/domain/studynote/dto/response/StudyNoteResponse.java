@@ -18,7 +18,6 @@ public record StudyNoteResponse(
         return StudyNoteResponse.builder()
                 .content(studyNote.getContent())
                 .createdAt(studyNote.getCreatedAt())
-                .id(studyNote.getId())
                 .title(studyNote.getTitle())
                 .username(studyNote.getMember().getUsername())
                 .id(studyNote.getId())

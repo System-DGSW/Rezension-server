@@ -3,6 +3,7 @@ package system.rezension.domain.studynote.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.repository.MemberRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class StudyNoteServiceImpl implements StudyNoteService {
 
     private final StudyNoteRepository studyNoteRepository;
@@ -62,7 +64,10 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         Member member = memberRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new MemberNotFoundException());
 
-        return studyNoteRepository.findAllByMember(member);
+        List<StudyNote> allStudyNotes = studyNoteRepository.findAllByMember(member);
+        return allStudyNotes.stream()
+                .map(StudyNoteResponse::fromStudyNoteEntity)
+                .toList();
     }
 
     @Override
