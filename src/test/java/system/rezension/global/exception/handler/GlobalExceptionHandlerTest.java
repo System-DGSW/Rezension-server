@@ -1,5 +1,6 @@
 package system.rezension.global.exception.handler;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ class GlobalExceptionHandlerTest {
         // then
         assertThat(response.getStatusCode().value()).isEqualTo(status.getStatusCode());
         ErrorResponse errorResponse = response.getBody();
+        Assertions.assertNotNull(errorResponse);
         System.out.println("ErrorResponse JSON: " +
                 "{\"status\":" + errorResponse.getStatus() +
                 ", \"code\":\"" + errorResponse.getCode() + "\"" +
