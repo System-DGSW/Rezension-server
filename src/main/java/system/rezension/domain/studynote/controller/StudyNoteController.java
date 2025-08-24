@@ -65,11 +65,11 @@ public class StudyNoteController {
 
     // StudyNote 삭제
     @DeleteMapping("/{studyNoteId}")
-    public ResponseEntity<StudyNoteResponse> deleteStudyNote(
+    public ResponseEntity<Void> deleteStudyNote(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long studyNoteId
     ) {
-        StudyNoteResponse response = studyNoteService.deleteStudyNote(userDetails, studyNoteId);
-        return ResponseEntity.ok(response);
+        studyNoteService.deleteStudyNote(userDetails, studyNoteId);
+        return ResponseEntity.noContent().build();
     }
 }
