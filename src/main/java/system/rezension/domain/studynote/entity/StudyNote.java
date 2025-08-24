@@ -21,7 +21,7 @@ public class StudyNote {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT", length = 2000)
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @CreationTimestamp

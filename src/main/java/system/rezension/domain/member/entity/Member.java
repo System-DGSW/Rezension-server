@@ -2,6 +2,7 @@ package system.rezension.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import system.rezension.domain.studynote.entity.StudyNote;
 
 import java.util.ArrayList;
@@ -30,5 +31,6 @@ public class Member {
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @BatchSize(size=20)
     private List<StudyNote> studyNotes = new ArrayList<>();
 }
