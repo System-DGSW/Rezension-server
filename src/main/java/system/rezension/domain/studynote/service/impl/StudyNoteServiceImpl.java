@@ -105,13 +105,13 @@ public class StudyNoteServiceImpl implements StudyNoteService {
     }
 
     @Override
-    public StudyNoteResponse deleteStudyNote(UserDetails userDetails, Long studyNoteId) {
+    public void deleteStudyNote(UserDetails userDetails, Long studyNoteId) {
         StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
                 .orElseThrow(StudyNoteNotFoundException::new);
 
         studyNoteValidator.validate(userDetails, studyNote);
 
         studyNoteRepository.delete(studyNote);
-        return StudyNoteResponse.fromStudyNoteEntity(studyNote);
+        StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
 }

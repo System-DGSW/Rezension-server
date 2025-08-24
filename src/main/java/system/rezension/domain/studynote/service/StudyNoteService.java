@@ -23,6 +23,6 @@ public interface StudyNoteService {
     StudyNoteResponse updateStudyNote(UserDetails userDetails,
                                       StudyNoteUpdateRequest studyNoteUpdateRequest, Long studyNoteId);
 
-    StudyNoteResponse deleteStudyNote(UserDetails userDetails,
-                                      Long studyNoteId);
+    void deleteStudyNote(UserDetails userDetails,
+                         Long studyNoteId);
 }

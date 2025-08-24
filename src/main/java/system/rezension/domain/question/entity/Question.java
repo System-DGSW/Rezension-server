@@ -24,5 +24,5 @@ public class Question {
     private StudyNote studyNote;
 
     @Enumerated(EnumType.STRING)
-    private EmailSubscription emailSubscription;
+    private Subscription emailSubscription;
 }
