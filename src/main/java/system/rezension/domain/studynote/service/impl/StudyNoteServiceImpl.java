@@ -20,6 +20,8 @@ import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
 
+import static system.rezension.domain.studynote.entity.Visibility.PUBLIC;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -63,9 +65,16 @@ public class StudyNoteServiceImpl implements StudyNoteService {
     // Page 이용해 StudyNote 읽기
     @Override
     public Page<StudyNoteResponse> readStudyNotePage(UserDetails userDetails, Long memberId, Pageable pageable) {
-        Page<StudyNote> studyNotes = studyNoteRepository.findByMemberId(memberId, pageable);
+        Member requester = memberRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(MemberNotFoundException::new);
 
-        // Entity → DTO 변환
+        Page<StudyNote> studyNotes;
+        if (requester.getId().equals(memberId)) {
+            studyNotes = studyNoteRepository.findByMemberId(memberId, pageable);
+        } else {
+            studyNotes = studyNoteRepository.findByMemberIdAndVisibility(memberId, PUBLIC, pageable);
+        }
+
         return studyNotes.map(StudyNoteResponse::fromStudyNoteEntity);
     }
 
