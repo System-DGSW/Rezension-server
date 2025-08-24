@@ -1,6 +1,8 @@
 package system.rezension.domain.studynote.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
     public StudyNoteResponse createStudyNote(UserDetails userDetails, StudyNoteCreateRequest studyNoteCreateRequest) {
 
         Member member = memberRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(MemberNotFoundException::new);
 
         StudyNote studyNote = StudyNote.builder()
                 .title(studyNoteCreateRequest.title())
@@ -51,19 +53,27 @@ public class StudyNoteServiceImpl implements StudyNoteService {
     @Override
     public StudyNoteResponse readStudyNote(UserDetails userDetails, Long studyNoteId) {
         StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
-                .orElseThrow(() -> new StudyNoteNotFoundException());
+                .orElseThrow(StudyNoteNotFoundException::new);
 
-        // 예외 추가 예정
         studyNoteValidator.validate(userDetails, studyNote);
 
         return StudyNoteResponse.fromStudyNoteEntity(studyNote);
+    }
+
+    // Page 이용해 StudyNote 읽기
+    @Override
+    public Page<StudyNoteResponse> readStudyNotePage(UserDetails userDetails, Long memberId, Pageable pageable) {
+        Page<StudyNote> studyNotes = studyNoteRepository.findByMemberId(memberId, pageable);
+
+        // Entity → DTO 변환
+        return studyNotes.map(StudyNoteResponse::fromStudyNoteEntity);
     }
 
     // StudyNote 전체 읽기
     @Override
     public List<StudyNoteResponse> readAllStudyNote(UserDetails userDetails) {
         Member member = memberRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(MemberNotFoundException::new);
 
         List<StudyNote> allStudyNotes = studyNoteRepository.findAllByMember(member);
         return allStudyNotes.stream()
