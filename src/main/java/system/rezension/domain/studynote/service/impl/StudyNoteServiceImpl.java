@@ -112,6 +112,5 @@ public class StudyNoteServiceImpl implements StudyNoteService {
         studyNoteValidator.validate(userDetails, studyNote);
 
         studyNoteRepository.delete(studyNote);
-        StudyNoteResponse.fromStudyNoteEntity(studyNote);
     }
 }
