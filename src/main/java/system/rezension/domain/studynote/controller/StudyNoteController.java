@@ -45,7 +45,7 @@ public class StudyNoteController {
     public ResponseEntity<Page<StudyNoteResponse>> readStudyNotePage(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long memberId,
-            @PageableDefault(size = 10) Pageable pageable
+            @PageableDefault(size = 20) Pageable pageable
     ) {
         Page<StudyNoteResponse> page = studyNoteService.readStudyNotePage(userDetails, memberId, pageable);
         return ResponseEntity.ok(page);
@@ -53,12 +53,13 @@ public class StudyNoteController {
 
 
     // StudyNote 수정
-    @PutMapping
+    @PutMapping("/{studyNoteId}")
     public ResponseEntity<StudyNoteResponse> updateStudyNote(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody StudyNoteUpdateRequest request
+            @RequestBody StudyNoteUpdateRequest request,
+            @PathVariable Long studyNoteId
     ) {
-        StudyNoteResponse response = studyNoteService.updateStudyNote(userDetails, request);
+        StudyNoteResponse response = studyNoteService.updateStudyNote(userDetails, request, studyNoteId);
         return ResponseEntity.ok(response);
     }
 

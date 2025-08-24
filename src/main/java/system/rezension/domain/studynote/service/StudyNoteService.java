@@ -21,7 +21,7 @@ public interface StudyNoteService {
     List<StudyNoteResponse> readAllStudyNote(UserDetails userDetails);
 
     StudyNoteResponse updateStudyNote(UserDetails userDetails,
-                                      StudyNoteUpdateRequest studyNoteUpdateRequest);
+                                      StudyNoteUpdateRequest studyNoteUpdateRequest, Long studyNoteId);
 
     StudyNoteResponse deleteStudyNote(UserDetails userDetails,
                                       Long studyNoteId);

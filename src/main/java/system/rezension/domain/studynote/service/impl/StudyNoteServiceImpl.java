@@ -91,8 +91,8 @@ public class StudyNoteServiceImpl implements StudyNoteService {
     }
 
     @Override
-    public StudyNoteResponse updateStudyNote(UserDetails userDetails, StudyNoteUpdateRequest studyNoteUpdateRequest) {
-        StudyNote studyNote = studyNoteRepository.findById(studyNoteUpdateRequest.id())
+    public StudyNoteResponse updateStudyNote(UserDetails userDetails, StudyNoteUpdateRequest studyNoteUpdateRequest, Long studyNoteId) {
+        StudyNote studyNote = studyNoteRepository.findById(studyNoteId)
                 .orElseThrow(StudyNoteNotFoundException::new);
 
         studyNoteValidator.validate(userDetails, studyNote);
