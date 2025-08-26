@@ -3,6 +3,7 @@ package system.rezension.domain.member.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.rezension.domain.member.dto.SignInRequest;
@@ -38,5 +39,16 @@ public class MemberService {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    public ResponseEntity<?> signIn(SignInRequest request) {
+        Member member = memberRepository.findByUsername(request.username())
+                .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String token = jwtProvider.createToken(request.username(), Role.BASIC);
+        return ResponseEntity.ok(Map.of("token", token));
     }
 }

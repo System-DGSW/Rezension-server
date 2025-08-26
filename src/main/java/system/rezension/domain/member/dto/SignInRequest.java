@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record SignInRequest(
         @NotNull
-        String usernmae,
+        String username,
         @NotNull
         String password
 ) {
