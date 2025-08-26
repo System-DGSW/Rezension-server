@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import system.rezension.domain.member.dto.SignInRequest;
 import system.rezension.domain.member.dto.SignUpRequest;
 import system.rezension.domain.member.service.MemberService;
 
@@ -19,5 +20,10 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpRequest request){
         return memberService.signUp(request);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody SignInRequest request){
+        return memberService.signIn(request);
     }
 }
