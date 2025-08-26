@@ -1,8 +1,8 @@
-package System.Rezension.question.entity;
+package system.rezension.domain.question.entity;
 
-import System.Rezension.studynote.entity.StudyNote;
 import jakarta.persistence.*;
 import lombok.*;
+import system.rezension.domain.studynote.entity.StudyNote;
 
 @Entity
 @Getter
@@ -22,4 +22,7 @@ public class Question {
     @OneToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "study_note_id", nullable = false,  unique = true)
     private StudyNote studyNote;
+
+    @Enumerated(EnumType.STRING)
+    private Subscription subscription;
 }

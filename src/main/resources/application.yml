@@ -10,3 +10,5 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+Jwt:
+  secret: 83827348ew7897)#(@Rwuoudyiyfd897*7#(@&890

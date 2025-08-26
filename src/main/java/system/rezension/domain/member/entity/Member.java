@@ -1,8 +1,9 @@
-package System.Rezension.member.entity;
+package system.rezension.domain.member.entity;
 
-import System.Rezension.studynote.entity.StudyNote;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
+import system.rezension.domain.studynote.entity.StudyNote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @BatchSize(size=20)
     private List<StudyNote> studyNotes = new ArrayList<>();
 }

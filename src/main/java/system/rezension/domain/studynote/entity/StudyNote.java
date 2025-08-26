@@ -1,10 +1,10 @@
-package System.Rezension.studynote.entity;
+package system.rezension.domain.studynote.entity;
 
-import System.Rezension.member.entity.Member;
-import System.Rezension.question.entity.Question;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import system.rezension.domain.member.entity.Member;
+import system.rezension.domain.question.entity.Question;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ public class StudyNote {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT", length = 2000)
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @CreationTimestamp
@@ -33,4 +33,7 @@ public class StudyNote {
 
     @OneToOne(mappedBy = "studyNote", cascade = CascadeType.ALL, orphanRemoval = true)
     private Question question;
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 }
