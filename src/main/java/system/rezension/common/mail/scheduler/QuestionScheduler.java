@@ -40,7 +40,7 @@ public class QuestionScheduler {
             sendQuestionService.sendQuestionMail(email, q);
 
             q.setSubscription(Subscription.NO); // 한 번 보냈으니 끔
-            questionRepository.save(q);
         }
+        questionRepository.saveAll(oneTimeQuestions);
     }
 }
