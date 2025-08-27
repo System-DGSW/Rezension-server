@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import system.rezension.domain.question.entity.Question;
 
@@ -35,6 +36,7 @@ public class SendQuestionService {
     }
 
     /* 질문 + 답변 메일 작성 */
+    @Async
     public void sendQuestionMail(String toMail, Question question) {
         String title = "Rezension: 오늘의 문제";
 
