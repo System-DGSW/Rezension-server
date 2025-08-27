@@ -9,6 +9,7 @@ import system.rezension.domain.member.dto.SignInRequest;
 import system.rezension.domain.member.dto.SignUpRequest;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.member.entity.Role;
+import system.rezension.domain.member.exception.LoginFailedException;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.exception.UsernameAlreadyExistException;
 import system.rezension.global.jwt.JwtProvider;
@@ -50,7 +51,7 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException());
 
         if (!passwordEncoder.matches(request.password(), member.getPassword())) {
-            return ResponseEntity.badRequest().build();
+            throw new LoginFailedException();
         }
 
         String token = jwtProvider.createToken(request.username(), Role.BASIC);
