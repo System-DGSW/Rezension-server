@@ -36,13 +36,14 @@ public class SendQuestionService {
 
     /* 질문 + 답변 메일 작성 */
     public void sendQuestionMail(String toMail, Question question) {
-        String title = "스터디 문제 공유";
+        String title = "학습한 내용 복습하기";
 
-        String content = new StringBuilder()
-                .append("<h2>오늘의 문제</h2>")
-                .append("<p><strong>문제:</strong> ").append(question.getQuestion()).append("</p>")
-                .append("<p><strong>답변:</strong> ").append(question.getAnswer()).append("</p>")
-                .toString();
+        String content = "<h2>오늘의 문제</h2>" +
+                "<p><strong>문제:</strong> " + question.getQuestion() + "</p>" +
+                "<details>" +
+                "<summary>답변 보기</summary>" +
+                "<p>" + question.getAnswer() + "</p>" +
+                "</details>";
 
         mailSend(toMail, title, content);
     }
