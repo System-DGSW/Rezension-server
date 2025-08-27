@@ -6,7 +6,9 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/Rezension}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:password}
+    url: jdbc:mysql://localhost:3306/asd
+    username: root
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+Jwt:
+  secret: 83827348ew7897)#(@Rwuoudyiyfd897*7#(@&890
