@@ -9,6 +9,7 @@ import system.rezension.domain.member.dto.SignInRequest;
 import system.rezension.domain.member.dto.SignUpRequest;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.member.entity.Role;
+import system.rezension.domain.member.exception.EmailAlreadyExistException;
 import system.rezension.domain.member.exception.LoginFailedException;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.exception.UsernameAlreadyExistException;
@@ -28,8 +29,14 @@ public class MemberService {
 
     public ResponseEntity<?> signUp(SignUpRequest request) {
 
+        // existsByUsername 으로 바꾸는 것이 효율성 측면에서 추천됨
         if (memberRepository.findByUsername(request.username()).isPresent()) {
             throw new UsernameAlreadyExistException();
+        }
+
+        // email 중복이 검증되지 않아서 추가
+        if (memberRepository.existsByEmail(request.email())) {
+            throw new EmailAlreadyExistException();
         }
 
         Member member = Member.builder()
