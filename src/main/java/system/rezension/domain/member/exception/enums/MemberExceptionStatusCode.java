@@ -10,7 +10,8 @@ public enum MemberExceptionStatusCode implements StatusCode {
     MEMBER_NOT_FOUND(404, "멤버를 찾을 수 없음"),
     EMAIL_VERIFY_FAILED(401, "인증되지 않은 이메일"),
     INVALID_CODE(401, "코드 인증 실패"),
-    ALREADY_EXIST(409, "이미 존재하는 이메일");
+    EMAIL_ALREADY_EXIST(409, "이미 존재하는 이메일"),
+    USERNAME_ALREADY_EXIST(409, "이미 존재하는 이름");
 
     private final int status;
 
