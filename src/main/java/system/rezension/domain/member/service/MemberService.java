@@ -13,8 +13,8 @@ import system.rezension.domain.member.exception.EmailAlreadyExistException;
 import system.rezension.domain.member.exception.LoginFailedException;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.exception.UsernameAlreadyExistException;
-import system.rezension.global.jwt.JwtProvider;
 import system.rezension.domain.member.repository.MemberRepository;
+import system.rezension.global.jwt.JwtProvider;
 
 import java.util.Map;
 
