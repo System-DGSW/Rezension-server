@@ -1,4 +1,4 @@
-package system.rezension.domain.question.service;
+package system.rezension.common.mail.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -36,13 +36,13 @@ public class SendQuestionService {
 
     /* 질문 + 답변 메일 작성 */
     public void sendQuestionMail(String toMail, Question question) {
-        String title = "학습한 내용 복습하기";
+        String title = "Rezension: 오늘의 문제";
 
         String content = "<h2>오늘의 문제</h2>" +
                 "<p><strong>문제:</strong> " + question.getQuestion() + "</p>" +
                 "<details>" +
                 "<summary>답변 보기</summary>" +
-                "<p>" + question.getAnswer() + "</p>" +
+                "<p><strong>정답:</strong> " + question.getAnswer() + "</p>" +
                 "</details>";
 
         mailSend(toMail, title, content);
