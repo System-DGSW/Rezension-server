@@ -6,9 +6,31 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/asd
+    url: jdbc:mysql://localhost:3306/Rezension
     username: root
-    password:
+    password: --------
     driver-class-name: com.mysql.cj.jdbc.Driver
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  mail:
+    host: smtp.gmail.com      # 예시, Gmail SMTP
+    port: 587
+    username: kimfine000@gmail.com   # <- 여기에 실제 발신 이메일
+    password: ---- ---- ---- ----    # <- 실제 SMTP 비밀번호 또는 앱 비밀번호 TODO: hide this
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
 Jwt:
   secret: 83827348ew7897)#(@Rwuoudyiyfd897*7#(@&890
+
+rabbitmq:
+  queue: question-email-queue
+  exchange: question-email-exchange
+  routing-key: question.email
+
+# docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
