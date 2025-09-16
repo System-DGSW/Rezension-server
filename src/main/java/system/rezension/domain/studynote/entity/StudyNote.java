@@ -7,6 +7,7 @@ import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.question.entity.Question;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -31,9 +32,9 @@ public class StudyNote {
     @JoinColumn(name = "member_id",  nullable = false)
     private Member member;
 
-    @OneToOne(mappedBy = "studyNote", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Question question;
+    @OneToMany(mappedBy = "studyNote", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> question;
 
     @Enumerated(EnumType.STRING)
-    private Visibility visibility;
+    private Subscription subscription;
 }

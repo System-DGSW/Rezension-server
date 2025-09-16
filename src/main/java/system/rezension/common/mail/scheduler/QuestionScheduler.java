@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import system.rezension.common.mail.service.SendQuestionService;
 import system.rezension.domain.question.entity.Question;
-import system.rezension.domain.question.entity.Subscription;
+import system.rezension.domain.studynote.entity.Subscription;
 import system.rezension.domain.question.repository.QuestionRepository;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import system.rezension.domain.question.entity.Question;
-import system.rezension.domain.question.entity.Subscription;
+import system.rezension.domain.studynote.entity.Subscription;
 
 import java.util.List;
 

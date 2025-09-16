@@ -20,7 +20,7 @@ import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
 
-import static system.rezension.domain.studynote.entity.Visibility.PUBLIC;
+import static system.rezension.domain.question.entity.Visibility.PUBLIC;
 
 @Service
 @RequiredArgsConstructor

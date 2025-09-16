@@ -1,4 +1,4 @@
-package system.rezension.domain.studynote.entity;
+package system.rezension.domain.question.entity;
 
 public enum Visibility {
     PUBLIC,

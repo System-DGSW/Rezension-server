@@ -1,6 +1,6 @@
 package system.rezension.domain.studynote.dto.request;
 
-import system.rezension.domain.studynote.entity.Visibility;
+import system.rezension.domain.question.entity.Visibility;
 
 import java.util.Optional;
 
