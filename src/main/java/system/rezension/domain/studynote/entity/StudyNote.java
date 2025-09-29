@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.question.entity.Question;
+import system.rezension.domain.question.entity.Visibility;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,4 +38,7 @@ public class StudyNote {
 
     @Enumerated(EnumType.STRING)
     private Subscription subscription;
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 }

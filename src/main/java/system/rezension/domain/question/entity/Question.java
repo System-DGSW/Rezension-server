@@ -23,7 +23,4 @@ public class Question {
     @ManyToOne(fetch =  FetchType.LAZY) // 1:1 -> 1:N
     @JoinColumn(name = "study_note_id", nullable = false)
     private StudyNote studyNote;
-
-    @Enumerated(EnumType.STRING)
-    private Visibility  visibility;
 }

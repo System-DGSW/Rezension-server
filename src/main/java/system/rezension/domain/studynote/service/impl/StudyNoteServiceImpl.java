@@ -6,9 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.repository.MemberRepository;
+import system.rezension.domain.question.dto.QuestionResponse;
+import system.rezension.domain.question.entity.Question;
+import system.rezension.domain.question.repository.QuestionRepository;
 import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
@@ -19,6 +23,8 @@ import system.rezension.domain.studynote.service.StudyNotePermissionValidator;
 import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static system.rezension.domain.question.entity.Visibility.PUBLIC;
 
@@ -28,25 +34,48 @@ import static system.rezension.domain.question.entity.Visibility.PUBLIC;
 public class StudyNoteServiceImpl implements StudyNoteService {
 
     private final StudyNoteRepository studyNoteRepository;
+    private final QuestionRepository questionRepository;
     private final MemberRepository memberRepository;
+    private final RestTemplate restTemplate;
     // validate 메서드가 StudyNote의 멤버와 현재 로그인 한 멤버와 같은지 확인합니다.
     private final StudyNotePermissionValidator studyNoteValidator;
 
     // StudyNote 만들기
     @Override
-    public StudyNoteResponse createStudyNote(UserDetails userDetails, StudyNoteCreateRequest studyNoteCreateRequest) {
+    public StudyNoteResponse createStudyNote(UserDetails userDetails, StudyNoteCreateRequest request) {
 
         Member member = memberRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(MemberNotFoundException::new);
 
         StudyNote studyNote = StudyNote.builder()
-                .title(studyNoteCreateRequest.title())
-                .content(studyNoteCreateRequest.content())
+                .title(request.title())
+                .content(request.content())
                 .member(member)
-                .visibility(studyNoteCreateRequest.visibility())
                 .build();
 
         StudyNote savedNote = studyNoteRepository.save(studyNote);
+
+        // AI 서버 호출
+        String aiUrl = "http://localhost:8000/chat"; // FastAPI 주소
+        Map<String, Object> body = Map.of(
+                "content", request.content(),
+                "visibility", request.visibility()
+        );
+
+        QuestionResponse aiResponse = restTemplate.postForObject(
+                aiUrl,
+                body,
+                QuestionResponse.class
+        );
+
+        // 3. Question DB 저장
+        Question question = Question.builder()
+                .question(Objects.requireNonNull(aiResponse).getAnswer())
+                .answer(aiResponse.getAnswer())
+                .studyNote(studyNote)
+                .build();
+
+        questionRepository.save(question);
 
         return StudyNoteResponse.fromStudyNoteEntity(savedNote);
     }

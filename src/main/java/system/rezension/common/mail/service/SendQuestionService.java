@@ -3,6 +3,7 @@ package system.rezension.common.mail.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -10,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import system.rezension.domain.question.entity.Question;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SendQuestionService {
@@ -31,7 +33,7 @@ public class SendQuestionService {
             helper.setText(content, true); // HTML 가능
             javaMailSender.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace(); // 에러 출력 (추후 로깅 처리 추천)
+            log.error(String.valueOf(e)); // 에러 출력 (추후 로깅 처리 추천)
         }
     }
 
