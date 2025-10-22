@@ -3,6 +3,7 @@ package system.rezension.domain.studynote.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class StudyNoteController {
     public ResponseEntity<Page<StudyNoteResponse>> readStudyNotePage(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long memberId,
-            @PageableDefault(size = 20) Pageable pageable
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<StudyNoteResponse> page = studyNoteService.readStudyNotePage(userDetails, memberId, pageable);
         return ResponseEntity.ok(page);
