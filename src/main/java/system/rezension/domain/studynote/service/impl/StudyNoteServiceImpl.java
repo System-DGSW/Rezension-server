@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static system.rezension.domain.question.entity.Visibility.PUBLIC;
+import static system.rezension.domain.studynote.entity.Visibility.PUBLIC;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +51,8 @@ public class StudyNoteServiceImpl implements StudyNoteService {
                 .title(request.title())
                 .content(request.content())
                 .member(member)
+                .visibility(request.visibility())
+                .subscription(request.subscription())
                 .build();
 
         StudyNote savedNote = studyNoteRepository.save(studyNote);
@@ -70,7 +72,7 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
         // 3. Question DB 저장
         Question question = Question.builder()
-                .question(Objects.requireNonNull(aiResponse).getAnswer())
+                .question(Objects.requireNonNull(aiResponse).getQuestion())
                 .answer(aiResponse.getAnswer())
                 .studyNote(studyNote)
                 .build();

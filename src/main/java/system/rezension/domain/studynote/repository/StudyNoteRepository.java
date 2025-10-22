@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.studynote.entity.StudyNote;
-import system.rezension.domain.question.entity.Visibility;
+import system.rezension.domain.studynote.entity.Visibility;
 import system.rezension.domain.studynote.entity.Subscription;
 
 import java.util.List;

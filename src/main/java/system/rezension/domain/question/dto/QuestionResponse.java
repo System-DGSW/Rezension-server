@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class QuestionResponse {
     private Long id;
+    private String question;
     private String answer;
 }
