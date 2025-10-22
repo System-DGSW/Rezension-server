@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.repository.MemberRepository;
@@ -24,7 +25,6 @@ import system.rezension.domain.studynote.service.StudyNoteService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static system.rezension.domain.studynote.entity.Visibility.PUBLIC;
 
@@ -57,30 +57,33 @@ public class StudyNoteServiceImpl implements StudyNoteService {
 
         StudyNote savedNote = studyNoteRepository.save(studyNote);
 
-        // AI 서버 호출
-        String aiUrl = "http://localhost:8000/chat"; // FastAPI 주소
+        // AI 서버 호출 (비동기)
+        String aiUrl = "http://localhost:8000/chat";
         Map<String, Object> body = Map.of(
                 "content", request.content(),
                 "visibility", request.visibility()
         );
 
-        QuestionResponse aiResponse = restTemplate.postForObject(
-                aiUrl,
-                body,
-                QuestionResponse.class
-        );
+        WebClient webClient = WebClient.create(aiUrl);
 
-        // 3. Question DB 저장
-        Question question = Question.builder()
-                .question(Objects.requireNonNull(aiResponse).getQuestion())
-                .answer(aiResponse.getAnswer())
-                .studyNote(studyNote)
-                .build();
+        webClient.post()
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(QuestionResponse.class)
+                .subscribe(aiResponse -> {
+                    // Question DB 저장
+                    Question question = Question.builder()
+                            .question(aiResponse.getQuestion())
+                            .answer(aiResponse.getAnswer())
+                            .studyNote(studyNote)
+                            .build();
 
-        questionRepository.save(question);
+                    questionRepository.save(question);
+                });
 
         return StudyNoteResponse.fromStudyNoteEntity(savedNote);
     }
+
 
     // StudyNote 1개 읽기
     @Override
