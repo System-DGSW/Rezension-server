@@ -37,4 +37,7 @@ public class StudyNote {
 
     @Enumerated(EnumType.STRING)
     private Subscription subscription;
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 }

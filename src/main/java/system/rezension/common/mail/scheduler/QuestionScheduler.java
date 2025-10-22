@@ -5,9 +5,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import system.rezension.common.mail.service.SendQuestionService;
-import system.rezension.domain.question.entity.Question;
+import system.rezension.domain.studynote.entity.StudyNote;
 import system.rezension.domain.studynote.entity.Subscription;
-import system.rezension.domain.question.repository.QuestionRepository;
+import system.rezension.domain.studynote.repository.StudyNoteRepository;
+import system.rezension.domain.question.entity.Question;
 
 import java.util.List;
 
@@ -16,31 +17,34 @@ import java.util.List;
 public class QuestionScheduler {
 
     private final SendQuestionService sendQuestionService;
-    private final QuestionRepository questionRepository;
+    private final StudyNoteRepository studyNoteRepository;
 
     @Scheduled(cron = "0 0 9 * * *") // 매일 9시
     @Transactional
     public void sendQuestion() {
-        // DAILY 구독 문제 전부 가져오기
-        List<Question> dailyQuestions = questionRepository.findBySubscription(Subscription.DAILY);
+        // DAILY 구독 스터디노트 가져오기
+        List<StudyNote> dailyNotes = studyNoteRepository.findBySubscription(Subscription.DAILY);
 
-        // ONE_TIME 구독 문제 전부 가져오기
-        List<Question> oneTimeQuestions = questionRepository.findBySubscription(Subscription.ONE_TIME);
+        // ONE_TIME 구독 스터디노트 가져오기
+        List<StudyNote> oneTimeNotes = studyNoteRepository.findBySubscription(Subscription.ONE_TIME);
 
         // DAILY 문제 전송
-        for (Question q : dailyQuestions) {
-            // Question → StudyNote → Member → email
-            String email = q.getStudyNote().getMember().getEmail();
-            sendQuestionService.sendQuestionMail(email, q);
+        for (StudyNote note : dailyNotes) {
+            String email = note.getMember().getEmail();
+            for (Question q : note.getQuestion()) {
+                sendQuestionService.sendQuestionMail(email, q);
+            }
         }
 
-        // ONE_TIME 문제 전송 후 NO로 변경
-        for (Question q : oneTimeQuestions) {
-            String email = q.getStudyNote().getMember().getEmail();
-            sendQuestionService.sendQuestionMail(email, q);
+        // ONE_TIME 문제 전송 후 구독 상태 변경
+        for (StudyNote note : oneTimeNotes) {
+            String email = note.getMember().getEmail();
+            for (Question q : note.getQuestion()) {
+                sendQuestionService.sendQuestionMail(email, q);
+            }
 
-            q.setSubscription(Subscription.NO); // 한 번 보냈으니 끔
+            note.setSubscription(Subscription.NO); // 한 번 보냈으니 끔
         }
-        questionRepository.saveAll(oneTimeQuestions);
+        studyNoteRepository.saveAll(oneTimeNotes);
     }
 }
