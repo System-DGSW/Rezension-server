@@ -1,7 +1,7 @@
 package system.rezension.domain.member.entity;
 
 public enum Role {
-    BASIC,
-    PRO,
-    ADMIN
+    ROLE_DEVELOPER,
+    ROLE_USER,
+    ROLE_ADMIN
 }

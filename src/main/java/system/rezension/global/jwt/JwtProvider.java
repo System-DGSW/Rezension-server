@@ -1,7 +1,9 @@
 package system.rezension.global.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,8 +11,6 @@ import org.springframework.stereotype.Component;
 import system.rezension.domain.member.entity.Role;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
@@ -18,26 +18,37 @@ import java.util.Date;
 public class JwtProvider {
 
     private final SecretKey secretKey;
-    private final long expiration = 3600000;
+    @Value("${spring.jwt.access-token-expiration}")  private long ACCESS_TOKEN_VALIDITY;
+    @Value("${spring.jwt.refresh-token-expiration}") private long REFRESH_TOKEN_VALIDITY;
 
-    public JwtProvider(@Value("${Jwt.secret}")String secretKey) {
-        this.secretKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+    public JwtProvider(@Value("${spring.jwt.secret}")String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String createToken(String username, Role role) {
+    public String createAccessToken(String username, Role role) {
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + expiration);
-
+        Date expiration = new Date(now.getTime() + ACCESS_TOKEN_VALIDITY);
         return Jwts.builder()
                 .subject(username)
                 .claim("role", role)
-                .signWith(secretKey)
                 .issuedAt(now)
-                .expiration(expirationDate)
+                .expiration(expiration)
+                .signWith(secretKey)
                 .compact();
     }
 
-    public String getUsername(String token) {
+    public String createRefreshToken(String username) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + REFRESH_TOKEN_VALIDITY);
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -46,16 +57,31 @@ public class JwtProvider {
         return claims.getSubject();
     }
 
+    public Role getRole(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        String roleString = claims.get("role", String.class);
+        return Role.valueOf(roleString);
+    }
+
     public boolean validateToken(String token) {
         try {
+            if (token == null || token.trim().isEmpty()) {
+                log.warn("토큰이 비어있습니다.");
+                return false;
+            }
+
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
             return true;
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        } catch (JwtException e) {
+            log.error("JWT 토큰 검증 실패: {}", e.getMessage());
             return false;
         }
     }
@@ -68,3 +94,4 @@ public class JwtProvider {
         return null;
     }
 }
+

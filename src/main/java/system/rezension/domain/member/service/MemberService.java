@@ -1,66 +1,68 @@
 package system.rezension.domain.member.service;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import system.rezension.common.web.ApiResponse;
+import system.rezension.domain.member.dto.request.GenerateTokenRequest;
 import system.rezension.domain.member.dto.request.SignInRequest;
 import system.rezension.domain.member.dto.request.SignUpRequest;
-import system.rezension.domain.member.dto.response.TokenResponse;
+import system.rezension.domain.member.dto.response.SignInResponse;
 import system.rezension.domain.member.entity.Member;
-import system.rezension.domain.member.entity.Role;
-import system.rezension.domain.member.exception.EmailAlreadyExistException;
-import system.rezension.domain.member.exception.LoginFailedException;
-import system.rezension.domain.member.exception.MemberNotFoundException;
-import system.rezension.domain.member.exception.UsernameAlreadyExistException;
+import system.rezension.domain.member.exception.AuthErrorCode;
+import system.rezension.domain.member.exception.AuthException;
 import system.rezension.domain.member.repository.MemberRepository;
-import system.rezension.global.jwt.JwtProvider;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final JwtProvider jwtProvider;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final TokenUseCase tokenUseCase;
 
-    public ApiResponse<TokenResponse> signUp(SignUpRequest request) {
-
-        // existsByUsername 으로 바꾸는 것이 효율성 측면에서 추천됨
-        if (memberRepository.findByUsername(request.username()).isPresent()) {
-            throw new UsernameAlreadyExistException();
+    public ApiResponse signUp(SignUpRequest request) {
+        if (memberRepository.existsByUsername(request.username())) {
+            throw new AuthException(AuthErrorCode.MEMBER_ALREADY_EXISTS);
         }
-
-        // email 중복이 검증되지 않아서 추가
-        if (memberRepository.existsByEmail(request.email())) {
-            throw new EmailAlreadyExistException();
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String date = LocalDateTime.now().format(formatter);
 
         Member member = Member.builder()
                 .username(request.username())
-                .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
-                .role(Role.BASIC)
+                .email(request.email())
+                .role(request.role())
                 .build();
-
         memberRepository.save(member);
 
-        String token = jwtProvider.createToken(request.username(), Role.BASIC);
+        return ApiResponse.success("회원가입에 성공하셨습니다.");
 
-        return ApiResponse.success(new TokenResponse(token));
     }
 
-    public ApiResponse<TokenResponse> signIn(SignInRequest request) {
-        Member member = memberRepository.findByUsername(request.username())
-                .orElseThrow(() -> new MemberNotFoundException());
 
+    public ApiResponse<SignInResponse> signIn(SignInRequest request, HttpServletResponse response) {
+        Member member = memberRepository.findByUsername(request.username())
+                .orElseThrow(() -> new AuthException(AuthErrorCode.MEMBER_NOT_FOUND));
         if (!passwordEncoder.matches(request.password(), member.getPassword())) {
-            throw new LoginFailedException();
+            throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS);
         }
 
-        String token = jwtProvider.createToken(request.username(), Role.BASIC);
-        return ApiResponse.success(new TokenResponse(token));
+        GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest(
+                member.getUsername(),
+                member.getRole()
+        );
+
+        String accessToken = tokenUseCase.generateAccessToken(generateTokenRequest, response);
+        String refreshToken = tokenUseCase.generateRefreshToken(generateTokenRequest, response);
+
+        return ApiResponse.success(new SignInResponse(accessToken,refreshToken));
     }
 }
+

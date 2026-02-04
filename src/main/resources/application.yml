@@ -10,5 +10,20 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
-Jwt:
-  secret: 83827348ew7897)#(@Rwuoudyiyfd897*7#(@&890
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kimfine000@gmail.com
+    password: ykvk xror dqgg mnpf
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  jwt:
+    secret: 83827348ew7897)#(@Rwuoudyiyfd897*7#(@&890
+    access-token-expiration: 900000
+    refresh-token-expiration: 604800000
+  data:
+    redis:
+      host: localhost
+      port: 6379

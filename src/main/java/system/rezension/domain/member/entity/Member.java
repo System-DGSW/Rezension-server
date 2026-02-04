@@ -1,16 +1,10 @@
 package system.rezension.domain.member.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
-import system.rezension.domain.studynote.entity.StudyNote;
+import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,13 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
     private String username;
-
     private String password;
     @Column(unique = true)
     private String email;
@@ -33,8 +27,5 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @BatchSize(size=20)
-    private List<StudyNote> studyNotes = new ArrayList<>();
+    private boolean isDeveloper;
 }
