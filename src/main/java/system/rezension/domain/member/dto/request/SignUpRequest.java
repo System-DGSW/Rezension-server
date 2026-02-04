@@ -1,4 +1,4 @@
-package system.rezension.domain.member.dto;
+package system.rezension.domain.member.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

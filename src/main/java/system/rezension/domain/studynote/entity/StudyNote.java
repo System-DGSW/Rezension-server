@@ -1,7 +1,11 @@
 package system.rezension.domain.studynote.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.question.entity.Question;
