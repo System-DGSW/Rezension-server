@@ -10,7 +10,6 @@ import java.util.Collection;
 @Getter
 public class CustomUserDetails implements UserDetails {
 
-    @Getter
     private final Long id;
     private final String username;
     private final String password;
