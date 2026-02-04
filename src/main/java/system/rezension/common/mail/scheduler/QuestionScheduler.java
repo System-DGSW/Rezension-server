@@ -5,10 +5,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import system.rezension.common.mail.service.SendQuestionService;
+import system.rezension.domain.question.entity.Question;
 import system.rezension.domain.studynote.entity.StudyNote;
 import system.rezension.domain.studynote.entity.Subscription;
 import system.rezension.domain.studynote.repository.StudyNoteRepository;
-import system.rezension.domain.question.entity.Question;
 
 import java.util.List;
 
