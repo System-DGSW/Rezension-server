@@ -5,8 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +13,7 @@ import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
 import system.rezension.domain.studynote.service.StudyNoteService;
+import system.rezension.global.security.CustomUserDetails;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,12 +42,12 @@ public class StudyNoteController {
     }
 
     // StudyNote 페이지 단위 조회
-    @GetMapping("/user/{memberId}")
+    @GetMapping("/user")
     public ApiResponse<Page<StudyNoteResponse>> readStudyNotePage(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long memberId,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
+        Long memberId = userDetails.getId();
         Page<StudyNoteResponse> page = studyNoteService.readStudyNotePage(userDetails, memberId, pageable);
         return ApiResponse.success(page);
     }
