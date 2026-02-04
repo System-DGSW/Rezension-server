@@ -30,6 +30,10 @@ public class ApiResponse<T> extends ResponseEntity<CommonResponse<T>> {
         return new ApiResponse<>(CommonResponse.success(message, cookie, HttpStatus.OK));
     }
 
+    public static <T> ApiResponse<T> created(T data) {
+        return new ApiResponse<>(CommonResponse.success(data, HttpStatus.CREATED));
+    }
+
     // 4. 생성 성공 응답 (201 Created)
     public static <T> ApiResponse<T> created(T data, String message) {
         return new ApiResponse<>(CommonResponse.success(data, message, HttpStatus.CREATED));
