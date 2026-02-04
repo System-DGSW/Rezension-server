@@ -2,11 +2,12 @@ package system.rezension.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import system.rezension.domain.member.dto.SignInRequest;
-import system.rezension.domain.member.dto.SignUpRequest;
+import system.rezension.common.web.ApiResponse;
+import system.rezension.domain.member.dto.request.SignInRequest;
+import system.rezension.domain.member.dto.request.SignUpRequest;
+import system.rezension.domain.member.dto.response.TokenResponse;
 import system.rezension.domain.member.entity.Member;
 import system.rezension.domain.member.entity.Role;
 import system.rezension.domain.member.exception.EmailAlreadyExistException;
@@ -15,8 +16,6 @@ import system.rezension.domain.member.exception.MemberNotFoundException;
 import system.rezension.domain.member.exception.UsernameAlreadyExistException;
 import system.rezension.domain.member.repository.MemberRepository;
 import system.rezension.global.jwt.JwtProvider;
-
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -27,7 +26,7 @@ public class MemberService {
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<?> signUp(SignUpRequest request) {
+    public ApiResponse<TokenResponse> signUp(SignUpRequest request) {
 
         // existsByUsername 으로 바꾸는 것이 효율성 측면에서 추천됨
         if (memberRepository.findByUsername(request.username()).isPresent()) {
@@ -50,10 +49,10 @@ public class MemberService {
 
         String token = jwtProvider.createToken(request.username(), Role.BASIC);
 
-        return ResponseEntity.ok(Map.of("token", token));
+        return ApiResponse.success(new TokenResponse(token));
     }
 
-    public ResponseEntity<?> signIn(SignInRequest request) {
+    public ApiResponse<TokenResponse> signIn(SignInRequest request) {
         Member member = memberRepository.findByUsername(request.username())
                 .orElseThrow(() -> new MemberNotFoundException());
 
@@ -62,7 +61,6 @@ public class MemberService {
         }
 
         String token = jwtProvider.createToken(request.username(), Role.BASIC);
-        return ResponseEntity.ok(Map.of("token", token));
-
+        return ApiResponse.success(new TokenResponse(token));
     }
 }
