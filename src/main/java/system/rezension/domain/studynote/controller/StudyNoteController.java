@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import system.rezension.common.web.ApiResponse;
 import system.rezension.domain.studynote.dto.request.StudyNoteCreateRequest;
 import system.rezension.domain.studynote.dto.request.StudyNoteUpdateRequest;
 import system.rezension.domain.studynote.dto.response.StudyNoteResponse;
@@ -23,12 +24,12 @@ public class StudyNoteController {
 
     // StudyNote 만들기
     @PostMapping
-    public ResponseEntity<StudyNoteResponse> createStudyNote(
+    public ApiResponse<StudyNoteResponse> createStudyNote(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody StudyNoteCreateRequest request
     ) {
         StudyNoteResponse response = studyNoteService.createStudyNote(userDetails, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ApiResponse.created(response);
     }
 
     // StudyNote 단일 조회
